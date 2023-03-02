@@ -1,6 +1,7 @@
 package com.donghyun.basic_board_android.repository
 
 import android.util.Log
+import com.donghyun.basic_board_android.dtos.HomeDto
 import com.donghyun.basic_board_android.dtos.MemberJoinDto
 import com.donghyun.basic_board_android.dtos.MemberLoginRequestDto
 import com.donghyun.basic_board_android.dtos.TokenInfo
@@ -24,5 +25,11 @@ class MemberRepository {
         return RetrofitService.RetrofitInstance.memberService.login(
             memberLoginRequestDto
         )
+    }
+
+    suspend fun getCurrentMemberInfo(
+        tokenInfo: String
+    ) : Response<HomeDto>{
+        return RetrofitService.RetrofitInstance.homeService.home(tokenInfo)
     }
 }

@@ -1,7 +1,5 @@
 package com.donghyun.basic_board_android.views
 
-import android.content.ContentValues
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,11 +18,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.donghyun.basic_board_android.viewModel.HomeViewModel
+import com.donghyun.basic_board_android.viewModel.MemberViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    memberViewModel: MemberViewModel
+    memberViewModel: MemberViewModel,
+    homeviewModel: HomeViewModel
 ){
     Column(
         modifier = Modifier
@@ -73,8 +74,7 @@ fun LoginScreen(
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)){
             Button(
                 onClick = {
-                    memberViewModel.login(email = email.value, password = password.value)
-                    Log.d("TAG", "LoginScreen: ${memberViewModel.getTokenInfo()}")
+                    memberViewModel.login(email = email.value, password = password.value, navController)
                 },
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.fillMaxWidth()

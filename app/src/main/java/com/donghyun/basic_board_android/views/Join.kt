@@ -1,7 +1,6 @@
 package com.donghyun.basic_board_android.views
 
 import android.content.ContentValues.TAG
-import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,27 +14,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.donghyun.basic_board_android.LoginActivity
+import com.donghyun.basic_board_android.dtos.HomeDto
 import com.donghyun.basic_board_android.dtos.MemberJoinDto
+import com.donghyun.basic_board_android.viewModel.MemberViewModel
 
 
 @Composable
 fun JoinScreen(
     memberViewModel: MemberViewModel,
     memberJoinResponse: MutableState<MemberJoinDto?>,
-    navController: NavController,
+    navController: NavController
 ){
-
     Column(
         modifier = Modifier
             .padding(20.dp),

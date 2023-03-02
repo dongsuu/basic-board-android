@@ -9,12 +9,12 @@ import retrofit2.http.POST
 
 interface MemberApi {
 
-    @POST("/members/join")
+    @POST("/apis/members/join")
     suspend fun join(
         @Body memberJoinDto: MemberJoinDto
     ) : Response<MemberJoinDto>
 
-    @POST("/members/login")
+    @POST("/apis/members/login")
     suspend fun login(
         @Body memberLoginRequestDto: MemberLoginRequestDto
     ) : Response<TokenInfo>
