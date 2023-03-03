@@ -24,7 +24,11 @@ class MemberViewModel(
     }
 
     private var tokenInfo: MutableState<TokenInfo?> = mutableStateOf(null)
-    private var requestToken: MutableState<String> = mutableStateOf("");
+    private var requestToken: MutableState<String> = mutableStateOf("")
+
+    fun getRequestToken(): MutableState<String>{
+        return requestToken
+    }
 
     fun getTokenInfo(): MutableState<TokenInfo?>{
         return tokenInfo

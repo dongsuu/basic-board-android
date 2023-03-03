@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -24,18 +25,24 @@ fun Home(
 ){
 
     Column(
-        modifier = Modifier.padding(20.dp),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ){
             Text(
                 text = "Basic-Board",
                 style= TextStyle(
-                    fontSize = 40.sp,
+                    fontSize = 50.sp,
                     fontFamily = FontFamily.Cursive,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 ),
                 modifier = Modifier
                     .padding(20.dp)
@@ -43,7 +50,11 @@ fun Home(
             )
         }
 
-        Column {
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "환영합니다. " + currentMemberInfo.value?.nickname + "님",
                 modifier = Modifier.padding(10.dp)
@@ -65,7 +76,7 @@ fun Home(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("BoardList") },
                     modifier = Modifier.padding(5.dp)
                 ) {
                     Text("게시판 목록")

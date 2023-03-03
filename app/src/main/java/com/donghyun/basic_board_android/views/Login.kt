@@ -83,7 +83,7 @@ fun LoginScreen(
             }
         }
 
-        Box(modifier = Modifier.padding(10.dp)){
+        Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)){
             Button(
                 onClick = {
                     navController.navigate("join")
