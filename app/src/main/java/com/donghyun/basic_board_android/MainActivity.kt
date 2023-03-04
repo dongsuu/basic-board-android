@@ -69,5 +69,7 @@ fun Navigation(
                 memberViewModel = memberViewModel,
                 boardName = backStackEntry.arguments?.getString("boardName")
             )}
+
+        composable("postDetails"){ PostDetails(postViewModel = postViewModel, homeViewModel,navController)}
     }
 }

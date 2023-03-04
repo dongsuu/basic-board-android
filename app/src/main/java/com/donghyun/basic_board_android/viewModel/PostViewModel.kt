@@ -8,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.donghyun.basic_board_android.dtos.CreatePostDto
 import com.donghyun.basic_board_android.dtos.PostDto
+import com.donghyun.basic_board_android.dtos.UpdatePostDto
 import com.donghyun.basic_board_android.repository.PostRepository
 import com.donghyun.basic_board_android.utility.FormDataUtil
 import com.donghyun.basic_board_android.utility.UriUtil
@@ -29,33 +31,41 @@ class PostViewModel(
         return imageUri
     }
 
+    private var postDetails : MutableState<UpdatePostDto?> = mutableStateOf(null)
+    fun getPostDetails(): MutableState<UpdatePostDto?>{
+        return postDetails
+    }
+
     fun createPost(
         title: String,
         content: String,
         boardName: String,
-        uris: List<Uri?>,
+        uris : List<Uri?>,
         context: Context,
         navController: NavController,
         accessToken: String
     ){
 
         val multipartList = mutableListOf<MultipartBody.Part>()
-
+        Log.d("TAG", "createPost: ${uris.size}")
         if(uris.isNotEmpty()){
             for (uri in uris) {
+                Log.d("TAG", "createPost: ${uri}")
                 val file = UriUtil.toFile(context, uri!!)
                 val multipart = FormDataUtil.getImageMultipart("files", file)
                 multipartList.add(multipart)
             }
         }
 
-        val post = PostDto(title, content, boardName)
+        val post = CreatePostDto(title, content, boardName)
 
         viewModelScope.launch {
             if(uris.isNotEmpty()){
                 val response = postRepository.createPostWithImages(post, multipartList, accessToken)
                 if(response.isSuccessful){
+                    Log.d("TAG", "createPostApi Success: ${response.body()}")
                     navController.navigate("postHome/${boardName}")
+                    imageUri.value = null
                 } else {
                     Log.d("TAG", "failed createPost Api")
                     Log.d("TAG", "createPost: ${response.message()}")
@@ -65,6 +75,7 @@ class PostViewModel(
                 val response = postRepository.createPost(post, accessToken)
                 if(response.isSuccessful){
                     navController.navigate("postHome/${boardName}")
+                    imageUri.value = null
                 } else {
                     Log.d("TAG", "failed createPost Api")
                     Log.d("TAG", "createPost: ${response.message()}")
@@ -78,8 +89,6 @@ class PostViewModel(
         requestToken: String,
         boardName: String
     ){
-        Log.d("TAG", "requestToken: ${requestToken}")
-        Log.d("TAG", "boardname: ${boardName}")
         viewModelScope.launch {
             val response = postRepository.getPostsByBoardName(boardName, requestToken)
             if(response.isSuccessful){
@@ -94,6 +103,26 @@ class PostViewModel(
 
             }
 
+        }
+    }
+
+    fun postDetails(
+        accessToken: String,
+        postId: Long,
+        navController: NavController
+    ) {
+        viewModelScope.launch {
+            val response = postRepository.postDetails(postId, accessToken)
+            if(response.isSuccessful){
+                Log.d("TAG", "postDetailsApi Success: ${response.body()}")
+                postDetails.value = response.body()
+                navController.navigate("postDetails")
+            } else {
+                Log.d("TAG", "postDetailsApi Failed")
+                Log.d("TAG", "${response.errorBody()}")
+                Log.d("TAG", "${response.raw()}")
+                Log.d("TAG", "${response.code()}")
+            }
         }
     }
 }

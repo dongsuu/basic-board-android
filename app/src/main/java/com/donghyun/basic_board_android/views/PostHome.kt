@@ -1,26 +1,23 @@
 package com.donghyun.basic_board_android.views
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.donghyun.basic_board_android.dtos.CreatePostDto
 import com.donghyun.basic_board_android.dtos.PostDto
-import com.donghyun.basic_board_android.viewModel.HomeViewModel
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
 import com.donghyun.basic_board_android.viewModel.PostViewModel
 
@@ -77,7 +74,14 @@ fun PostHome(
                 Log.d("TAG", "Posts size: ${posts.value!!.size}")
                 Row(
                     verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier.clickable {
+                        postViewModel.postDetails(
+                            memberViewModel.getRequestToken().value,
+                            it.id,
+                            navController
+                        )
+                    }
                 ) {
                     Column(
                         verticalArrangement = Arrangement.Top,

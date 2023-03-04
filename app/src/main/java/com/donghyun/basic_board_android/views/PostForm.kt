@@ -32,15 +32,18 @@ fun PostForm(
 ){
     TopAppBar(navController = navController)
 
-    var imageUris = mutableListOf<Uri?>()
+    val imageUris = remember {
+        mutableStateListOf<Uri?>()
+    }
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = {
             imageUri.value = it
-            imageUris.add(imageUri.value)
+            imageUris.add(it)
         }
     )
+
 
     var title = remember {
         mutableStateOf("")
@@ -82,7 +85,6 @@ fun PostForm(
         }
 
         Column(
-            modifier = Modifier.size(300.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -92,27 +94,52 @@ fun PostForm(
                     contentDescription = "image"
                 )
             }
+        }
 
-            Button(onClick = { launcher.launch("image/*") }) {
+        Spacer(modifier = Modifier.padding(20.dp))
+        Row(horizontalArrangement = Arrangement.SpaceBetween){
+            Button(
+                onClick = {
+                    launcher.launch("image/*")
+                },
+                modifier = Modifier.padding(3.dp)
+            ) {
                 Text(text = "이미지 선택")
+            }
+            Button(onClick = {
+                    imageUri.value = null
+                    postViewModel.getImageUri().value = null
+                },
+                modifier = Modifier.padding(3.dp)
+            ) {
+                Text(text = "이미지 선택 취소")
             }
         }
 
-        Button(onClick = {
-            postViewModel.createPost(
-                title.value,
-                content.value,
-                boardName!!,
-                imageUris,
-                context,
-                navController,
-                memberViewModel.getRequestToken().value)
-        }) {
-            Text(text = "글쓰기 완료")
-        }
+        Row(horizontalArrangement = Arrangement.SpaceBetween){
+            Button(onClick = {
+                postViewModel.createPost(
+                    title.value,
+                    content.value,
+                    boardName!!,
+                    imageUris,
+                    context,
+                    navController,
+                    memberViewModel.getRequestToken().value)
+                 }, modifier = Modifier.padding(3.dp)
+            ) {
+                Text(text = "글쓰기 완료")
+            }
 
-        Button(onClick = { navController.navigate("postHome") }) {
-            Text(text = "취소")
+            Button(
+                onClick = {
+                    navController.navigate("postHome/${boardName}")
+                    imageUri.value = null
+                    postViewModel.getImageUri().value = null
+                }, modifier = Modifier.padding(3.dp)
+            ) {
+                Text(text = "글쓰기 취소")
+            }
         }
     }
 

@@ -1,11 +1,11 @@
 package com.donghyun.basic_board_android.apis
 
+import com.donghyun.basic_board_android.dtos.CreatePostDto
 import com.donghyun.basic_board_android.dtos.PostDto
+import com.donghyun.basic_board_android.dtos.UpdatePostDto
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 
 interface PostApi {
 
@@ -16,9 +16,9 @@ interface PostApi {
     ) : Response<List<PostDto>>
 
     @Multipart
-    @POST("/apis/posts/new")
+    @POST("/apis/posts/upload/new")
     suspend fun createPostWithImages(
-        @Part("data") post: PostDto,
+        @Part("data") post: CreatePostDto,
         @Part images: List<MultipartBody.Part>,
         @Header("Authorization") token: String
     ) : Response<String>
@@ -26,9 +26,15 @@ interface PostApi {
     @Multipart
     @POST("/apis/posts/new")
     suspend fun createPost(
-        @Part("data") post: PostDto,
+        @Part("data") post: CreatePostDto,
         @Header("Authorization") token: String
     ) : Response<String>
+
+    @GET("/apis/posts/details/{postId}")
+    suspend fun postDetails(
+        @Path("postId") postId: Long,
+        @Header("Authorization") token: String
+    ) : Response<UpdatePostDto>
 
     @POST("/apis/posts/update/{postId}")
     suspend fun updatePost()

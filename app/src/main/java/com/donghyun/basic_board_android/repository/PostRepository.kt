@@ -1,15 +1,13 @@
 package com.donghyun.basic_board_android.repository
 
 import android.util.Log
-import com.donghyun.basic_board_android.apis.MemberApi
 import com.donghyun.basic_board_android.apis.PostApi
+import com.donghyun.basic_board_android.dtos.CreatePostDto
 import com.donghyun.basic_board_android.dtos.PostDto
+import com.donghyun.basic_board_android.dtos.UpdatePostDto
 import com.donghyun.basic_board_android.service.RetrofitService
 import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.create
-import java.io.File
-import java.nio.file.Files
 
 class PostRepository {
 
@@ -24,7 +22,7 @@ class PostRepository {
         )
     }
 
-    suspend fun createPostWithImages(post: PostDto, images: List<MultipartBody.Part>, accessToken: String) : Response<String>{
+    suspend fun createPostWithImages(post: CreatePostDto, images: List<MultipartBody.Part>, accessToken: String) : Response<String>{
         val retrofit = RetrofitService.RetrofitInstance.getInstance()
         val postApi = retrofit.create(PostApi::class.java)
 
@@ -33,12 +31,21 @@ class PostRepository {
         )
     }
 
-    suspend fun createPost(post: PostDto, accessToken: String) : Response<String>{
+    suspend fun createPost(post: CreatePostDto, accessToken: String) : Response<String>{
         val retrofit = RetrofitService.RetrofitInstance.getInstance()
         val postApi = retrofit.create(PostApi::class.java)
 
         return postApi.createPost(
             post, accessToken
+        )
+    }
+
+    suspend fun postDetails(postId: Long, accessToken: String) : Response<UpdatePostDto>{
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val postApi = retrofit.create(PostApi::class.java)
+
+        return postApi.postDetails(
+            postId, accessToken
         )
     }
 }
