@@ -8,6 +8,7 @@ import com.donghyun.basic_board_android.dtos.UpdatePostDto
 import com.donghyun.basic_board_android.service.RetrofitService
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.create
 
 class PostRepository {
 
@@ -46,6 +47,17 @@ class PostRepository {
 
         return postApi.postDetails(
             postId, accessToken
+        )
+    }
+
+    suspend fun updatePost(postId: Long, accessToken: String, updatePost: CreatePostDto) : Response<String>{
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val postApi = retrofit.create(PostApi::class.java)
+
+        return postApi.updatePost(
+            accessToken,
+            postId,
+            updatePost
         )
     }
 }

@@ -107,7 +107,9 @@ fun PostDetails(
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
             if(homeViewModel.getCurrentMemberInfo().value!!.name == post.author){
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+                    navController.navigate("updatePost")
+                }) {
                     Text(text = "글 수정하기")
                 }
                 Button(onClick = { /*TODO*/ }) {

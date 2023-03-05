@@ -71,5 +71,13 @@ fun Navigation(
             )}
 
         composable("postDetails"){ PostDetails(postViewModel = postViewModel, homeViewModel,navController)}
+        composable("updatePost"){
+            UpdatePost(
+                navController = navController,
+                imageUri = postViewModel.getImageUri(),
+                postViewModel = postViewModel,
+                memberViewModel = memberViewModel)
+        }
+
     }
 }

@@ -36,6 +36,11 @@ class PostViewModel(
         return postDetails
     }
 
+    private var currentPostId: MutableState<Long> = mutableStateOf(0L)
+    fun getCurrentPostId() : MutableState<Long>{
+        return currentPostId
+    }
+
     fun createPost(
         title: String,
         content: String,
@@ -116,6 +121,7 @@ class PostViewModel(
             if(response.isSuccessful){
                 Log.d("TAG", "postDetailsApi Success: ${response.body()}")
                 postDetails.value = response.body()
+                currentPostId.value = postId
                 navController.navigate("postDetails")
             } else {
                 Log.d("TAG", "postDetailsApi Failed")
@@ -125,4 +131,55 @@ class PostViewModel(
             }
         }
     }
+
+    fun updatePost(
+        accessToken: String,
+        postId: Long,
+        navController: NavController,
+        title: String,
+        content: String,
+        boardName: String,
+        uris : List<Uri?>,
+        context: Context
+    ){
+        val multipartList = mutableListOf<MultipartBody.Part>()
+        Log.d("TAG", "updatePost: ${uris.size}")
+        if(uris.isNotEmpty()){
+            for (uri in uris) {
+                Log.d("TAG", "updatePost: ${uri}")
+                val file = UriUtil.toFile(context, uri!!)
+                val multipart = FormDataUtil.getImageMultipart("files", file)
+                multipartList.add(multipart)
+            }
+        }
+
+        val updatePost = CreatePostDto(title, content, boardName)
+
+        viewModelScope.launch {
+            if(uris.isNotEmpty()){
+                val response = postRepository.createPostWithImages(updatePost, multipartList, accessToken)
+                if(response.isSuccessful){
+                    Log.d("TAG", "createPostApi Success: ${response.body()}")
+                    navController.navigate("postHome/${boardName}")
+                    imageUri.value = null
+                } else {
+                    Log.d("TAG", "failed createPost Api")
+                    Log.d("TAG", "createPost: ${response.message()}")
+                    Log.d("TAG", "createPost: ${response.raw()}")
+                }
+            } else {
+                val response = postRepository.updatePost(postId, accessToken, updatePost)
+                if(response.isSuccessful){
+                    Log.d("TAG", "updatePost: ${response.body()}")
+                    navController.navigate("postHome/${boardName}")
+                    imageUri.value = null
+                } else {
+                    Log.d("TAG", "failed updatePost Api")
+                    Log.d("TAG", "updatePost: ${response.message()}")
+                    Log.d("TAG", "updatePost: ${response.raw()}")
+                }
+            }
+        }
+    }
+
 }

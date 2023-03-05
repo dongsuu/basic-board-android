@@ -37,7 +37,18 @@ interface PostApi {
     ) : Response<UpdatePostDto>
 
     @POST("/apis/posts/update/{postId}")
-    suspend fun updatePost()
+    suspend fun updatePost(
+        @Header("Authorization") token: String,
+        @Path("postId") postId: Long,
+        @Body updatePost: CreatePostDto
+    ) : Response<String>
+
+    @POST("/apis/posts/update/upload/{postId}")
+    suspend fun updatePostWithImages(
+        @Part("data") post: CreatePostDto,
+        @Part images: List<MultipartBody.Part>,
+        @Header("Authorization") token: String
+    ) : Response<String>
 
     @POST("/apis/posts/delete/{postId}")
     suspend fun deletePost(
