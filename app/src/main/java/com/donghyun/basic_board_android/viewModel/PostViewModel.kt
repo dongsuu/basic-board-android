@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.donghyun.basic_board_android.dtos.CreatePostDto
+import com.donghyun.basic_board_android.dtos.DetailsPostDto
 import com.donghyun.basic_board_android.dtos.PostDto
 import com.donghyun.basic_board_android.dtos.UpdatePostDto
 import com.donghyun.basic_board_android.repository.PostRepository
@@ -31,8 +32,8 @@ class PostViewModel(
         return imageUri
     }
 
-    private var postDetails : MutableState<UpdatePostDto?> = mutableStateOf(null)
-    fun getPostDetails(): MutableState<UpdatePostDto?>{
+    private var postDetails : MutableState<DetailsPostDto?> = mutableStateOf(null)
+    fun getPostDetails(): MutableState<DetailsPostDto?>{
         return postDetails
     }
 
@@ -178,6 +179,24 @@ class PostViewModel(
                     Log.d("TAG", "updatePost: ${response.message()}")
                     Log.d("TAG", "updatePost: ${response.raw()}")
                 }
+            }
+        }
+    }
+
+    fun deletePost(
+        accessToken: String,
+        postId: Long,
+        boardName: String,
+        navController: NavController
+    ){
+        viewModelScope.launch {
+            val response = postRepository.deletePost(postId, accessToken)
+            if(response.isSuccessful){
+                navController.navigate("postHome/${boardName}")
+            } else {
+                Log.d("TAG", "failed deletePost Api")
+                Log.d("TAG", "updatePost: ${response.message()}")
+                Log.d("TAG", "updatePost: ${response.raw()}")
             }
         }
     }

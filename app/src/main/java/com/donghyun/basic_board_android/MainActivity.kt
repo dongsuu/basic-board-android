@@ -70,7 +70,7 @@ fun Navigation(
                 boardName = backStackEntry.arguments?.getString("boardName")
             )}
 
-        composable("postDetails"){ PostDetails(postViewModel = postViewModel, homeViewModel,navController)}
+        composable("postDetails"){ PostDetails(postViewModel = postViewModel, homeViewModel, memberViewModel, navController)}
         composable("updatePost"){
             UpdatePost(
                 navController = navController,

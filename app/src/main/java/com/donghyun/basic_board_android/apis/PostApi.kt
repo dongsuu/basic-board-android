@@ -1,6 +1,7 @@
 package com.donghyun.basic_board_android.apis
 
 import com.donghyun.basic_board_android.dtos.CreatePostDto
+import com.donghyun.basic_board_android.dtos.DetailsPostDto
 import com.donghyun.basic_board_android.dtos.PostDto
 import com.donghyun.basic_board_android.dtos.UpdatePostDto
 import okhttp3.MultipartBody
@@ -34,7 +35,7 @@ interface PostApi {
     suspend fun postDetails(
         @Path("postId") postId: Long,
         @Header("Authorization") token: String
-    ) : Response<UpdatePostDto>
+    ) : Response<DetailsPostDto>
 
     @POST("/apis/posts/update/{postId}")
     suspend fun updatePost(
@@ -52,6 +53,7 @@ interface PostApi {
 
     @POST("/apis/posts/delete/{postId}")
     suspend fun deletePost(
-
-    )
+        @Header("Authorization") token: String,
+        @Path("postId") postId: Long
+    ) : Response<String>
 }
