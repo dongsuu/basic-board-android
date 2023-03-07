@@ -1,7 +1,9 @@
 package com.donghyun.basic_board_android.dtos
 
+import java.time.LocalDateTime
+
 data class PostDto(
-    private val title : String = "",
-    private val content : String = "",
-    private val boardName : String = ""
+    val id: Long,
+    val title: String,
+    val content: String,
 )

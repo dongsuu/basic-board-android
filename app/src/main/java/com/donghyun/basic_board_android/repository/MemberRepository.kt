@@ -1,6 +1,9 @@
 package com.donghyun.basic_board_android.repository
 
 import android.util.Log
+import com.donghyun.basic_board_android.apis.HomeApi
+import com.donghyun.basic_board_android.apis.MemberApi
+import com.donghyun.basic_board_android.apis.PostApi
 import com.donghyun.basic_board_android.dtos.HomeDto
 import com.donghyun.basic_board_android.dtos.MemberJoinDto
 import com.donghyun.basic_board_android.dtos.MemberLoginRequestDto
@@ -14,7 +17,9 @@ class MemberRepository {
         memberJoinDto: MemberJoinDto
     ) : Response<MemberJoinDto>{
         Log.d("TAG", "join: ${memberJoinDto}")
-        return RetrofitService.RetrofitInstance.memberService.join(
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val memberApi = retrofit.create(MemberApi::class.java)
+        return memberApi.join(
             memberJoinDto
         )
     }
@@ -22,7 +27,9 @@ class MemberRepository {
     suspend fun login(
         memberLoginRequestDto: MemberLoginRequestDto
     ) : Response<TokenInfo>{
-        return RetrofitService.RetrofitInstance.memberService.login(
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val memberApi = retrofit.create(MemberApi::class.java)
+        return memberApi.login(
             memberLoginRequestDto
         )
     }
@@ -30,6 +37,8 @@ class MemberRepository {
     suspend fun getCurrentMemberInfo(
         tokenInfo: String
     ) : Response<HomeDto>{
-        return RetrofitService.RetrofitInstance.homeService.home(tokenInfo)
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val homeApi = retrofit.create(HomeApi::class.java)
+        return homeApi.home(tokenInfo)
     }
 }
