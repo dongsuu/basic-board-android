@@ -11,8 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.donghyun.basic_board_android.dtos.MemberJoinDto
+import com.donghyun.basic_board_android.repository.CommentRepository
 import com.donghyun.basic_board_android.repository.MemberRepository
 import com.donghyun.basic_board_android.repository.PostRepository
+import com.donghyun.basic_board_android.viewModel.CommentViewModel
 import com.donghyun.basic_board_android.viewModel.HomeViewModel
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
 import com.donghyun.basic_board_android.viewModel.PostViewModel
@@ -20,7 +22,9 @@ import com.donghyun.basic_board_android.views.*
 
 class MainActivity : ComponentActivity() {
     private val memberRepository : MemberRepository = MemberRepository()
+    private val commentRepository: CommentRepository = CommentRepository()
     private val homeViewModel: HomeViewModel = HomeViewModel(memberRepository)
+    private val commentViewModel: CommentViewModel = CommentViewModel(commentRepository)
     private val memberViewModel: MemberViewModel = MemberViewModel(memberRepository, homeViewModel)
     private val postRepository : PostRepository = PostRepository()
     private val postViewModel: PostViewModel = PostViewModel(postRepository)
@@ -33,7 +37,8 @@ class MainActivity : ComponentActivity() {
                 memberViewModel = memberViewModel,
                 memberJoinResponse = memberViewModel.getMemberJoinResponse(),
                 homeViewModel = homeViewModel,
-                postViewModel = postViewModel
+                postViewModel = postViewModel,
+                commentViewModel = commentViewModel
                 )
         }
     }
@@ -44,7 +49,8 @@ fun Navigation(
     memberViewModel: MemberViewModel,
     memberJoinResponse: MutableState<MemberJoinDto?>,
     homeViewModel: HomeViewModel,
-    postViewModel: PostViewModel
+    postViewModel: PostViewModel,
+    commentViewModel: CommentViewModel
 ){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "login"){
@@ -70,7 +76,7 @@ fun Navigation(
                 boardName = backStackEntry.arguments?.getString("boardName")
             )}
 
-        composable("postDetails"){ PostDetails(postViewModel = postViewModel, homeViewModel, memberViewModel, navController)}
+        composable("postDetails"){ PostDetails(postViewModel = postViewModel, homeViewModel, memberViewModel, commentViewModel, navController)}
         composable("updatePost"){
             UpdatePost(
                 navController = navController,
