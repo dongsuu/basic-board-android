@@ -81,5 +81,20 @@ class MemberViewModel(
         }
     }
 
+    fun logout(
+        navController: NavController
+    ){
+        viewModelScope.launch {
+            val response = memberRepository.logout(getRequestToken().value)
+
+            if(response.isSuccessful){
+                navController.navigate("login")
+            } else {
+                Log.d(TAG, "failed logout")
+                Log.e(TAG, "error: ${response.errorBody()}")
+            }
+        }
+    }
+
 
 }

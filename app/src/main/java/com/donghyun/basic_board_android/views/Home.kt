@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.donghyun.basic_board_android.dtos.HomeDto
 import com.donghyun.basic_board_android.viewModel.HomeViewModel
+import com.donghyun.basic_board_android.viewModel.MemberViewModel
 
 
 @Composable
 fun Home(
     navController: NavController,
-    currentMemberInfo: MutableState<HomeDto?>
+    currentMemberInfo: MutableState<HomeDto?>,
+    memberViewModel: MemberViewModel
 ){
 
     Column(
@@ -90,7 +92,9 @@ fun Home(
                 }
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                          memberViewModel.logout(navController)
+                    },
                     modifier = Modifier.padding(5.dp)
                 ) {
                     Text(text = "로그아웃")

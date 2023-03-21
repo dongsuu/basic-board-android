@@ -56,7 +56,7 @@ fun Navigation(
     NavHost(navController = navController, startDestination = "login"){
         composable("login"){ LoginScreen(navController = navController, memberViewModel, homeviewModel = homeViewModel) }
         composable("join"){ JoinScreen(memberViewModel = memberViewModel, memberJoinResponse = memberJoinResponse, navController = navController) }
-        composable("home"){ Home(navController = navController, currentMemberInfo = homeViewModel.getCurrentMemberInfo()) }
+        composable("home"){ Home(navController = navController, currentMemberInfo = homeViewModel.getCurrentMemberInfo(), memberViewModel = memberViewModel) }
         composable("boardList") { BoardListScreen(navController = navController) }
         composable(
             "postHome/{boardName}",

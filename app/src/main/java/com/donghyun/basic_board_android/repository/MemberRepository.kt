@@ -10,6 +10,7 @@ import com.donghyun.basic_board_android.dtos.MemberLoginRequestDto
 import com.donghyun.basic_board_android.dtos.TokenInfo
 import com.donghyun.basic_board_android.service.RetrofitService
 import retrofit2.Response
+import retrofit2.create
 
 class MemberRepository {
 
@@ -40,5 +41,13 @@ class MemberRepository {
         val retrofit = RetrofitService.RetrofitInstance.getInstance()
         val homeApi = retrofit.create(HomeApi::class.java)
         return homeApi.home(tokenInfo)
+    }
+
+    suspend fun logout(
+        accessToken: String
+    ) : Response<String>{
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val memberApi = retrofit.create(MemberApi::class.java)
+        return memberApi.logout(accessToken)
     }
 }
