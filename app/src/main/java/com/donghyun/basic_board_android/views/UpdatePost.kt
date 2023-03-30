@@ -55,7 +55,7 @@ fun UpdatePost(
         mutableStateOf(previousPost.boardName)
     }
 
-
+    TopAppBar(navController = navController)
     Column(
         modifier = Modifier.padding(60.dp),
         verticalArrangement = Arrangement.Center,

@@ -4,10 +4,7 @@ import android.util.Log
 import com.donghyun.basic_board_android.apis.HomeApi
 import com.donghyun.basic_board_android.apis.MemberApi
 import com.donghyun.basic_board_android.apis.PostApi
-import com.donghyun.basic_board_android.dtos.HomeDto
-import com.donghyun.basic_board_android.dtos.MemberJoinDto
-import com.donghyun.basic_board_android.dtos.MemberLoginRequestDto
-import com.donghyun.basic_board_android.dtos.TokenInfo
+import com.donghyun.basic_board_android.dtos.*
 import com.donghyun.basic_board_android.service.RetrofitService
 import retrofit2.Response
 import retrofit2.create
@@ -49,5 +46,22 @@ class MemberRepository {
         val retrofit = RetrofitService.RetrofitInstance.getInstance()
         val memberApi = retrofit.create(MemberApi::class.java)
         return memberApi.logout(accessToken)
+    }
+
+    suspend fun myInfo(
+        accessToken: String
+    ) : Response<MyInfoDto>{
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val memberApi = retrofit.create(MemberApi::class.java)
+        return memberApi.myInfo(accessToken)
+    }
+
+    suspend fun updateMyInfo(
+        accessToken: String,
+        updateMemberDto: UpdateMemberDto
+    ) : Response<String>{
+        val retrofit = RetrofitService.RetrofitInstance.getInstance()
+        val memberApi = retrofit.create(MemberApi::class.java)
+        return memberApi.updateMyInfo(accessToken, updateMemberDto)
     }
 }

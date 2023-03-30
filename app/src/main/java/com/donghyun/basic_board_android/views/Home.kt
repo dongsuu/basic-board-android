@@ -33,7 +33,6 @@ fun Home(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
@@ -85,7 +84,9 @@ fun Home(
                 }
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                          memberViewModel.myInfo(memberViewModel.getRequestToken().value, navController)
+                    },
                     modifier = Modifier.padding(5.dp)
                 ) {
                     Text(text = "내 정보")

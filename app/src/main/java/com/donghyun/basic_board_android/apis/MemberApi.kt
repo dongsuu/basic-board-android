@@ -1,10 +1,9 @@
 package com.donghyun.basic_board_android.apis
 
-import com.donghyun.basic_board_android.dtos.MemberJoinDto
-import com.donghyun.basic_board_android.dtos.MemberLoginRequestDto
-import com.donghyun.basic_board_android.dtos.TokenInfo
+import com.donghyun.basic_board_android.dtos.*
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -24,4 +23,15 @@ interface MemberApi {
     suspend fun logout(
         @Header("Authorization") token: String
     ) : Response<String>
+
+    @GET("/apis/members/myInfo")
+    suspend fun myInfo(
+        @Header("Authorization") token: String
+    ) : Response<MyInfoDto>
+
+    @POST("/apis/members/update/myInfo")
+    suspend fun updateMyInfo(
+        @Header("Authorization") token: String,
+        @Body updateMemberDto: UpdateMemberDto
+    ): Response<String>
 }

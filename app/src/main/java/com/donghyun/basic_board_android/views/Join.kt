@@ -5,9 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -26,102 +24,194 @@ import com.donghyun.basic_board_android.dtos.MemberJoinDto
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
 
 
+//@Composable
+//fun JoinScreen(
+//    memberViewModel: MemberViewModel,
+//    memberJoinResponse: MutableState<MemberJoinDto?>,
+//    navController: NavController
+//){
+//    Column(
+//        modifier = Modifier
+//            .padding(20.dp),
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//
+//        val name = remember{
+//            mutableStateOf("")
+//        }
+//
+//        val email = remember {
+//            mutableStateOf("")
+//        }
+//
+//        val password = remember {
+//            mutableStateOf("")
+//        }
+//
+//        val nickname = remember {
+//            mutableStateOf("")
+//        }
+//
+//        val age = remember {
+//            mutableStateOf("")
+//        }
+//
+//        Text(
+//            text = "회원가입",
+//            style = TextStyle(
+//                fontSize = 40.sp,
+//                fontFamily = FontFamily.Cursive,
+//                fontWeight = FontWeight.Bold
+//            ),
+//            modifier = Modifier.padding(20.dp)
+//        )
+//
+//        Spacer(modifier = Modifier.padding(20.dp))
+//
+//        TextField(
+//            label = { Text(text = "이름") },
+//            value = name.value,
+//            onValueChange = {n -> name.value = n}
+//        )
+//
+//
+//        TextField(
+//            label = { Text(text = "이메일 (아이디)") },
+//            value = email.value,
+//            onValueChange = {e -> email.value = e}
+//        )
+//
+//        TextField(
+//            label = { Text(text = "비밀번호") },
+//            value = password.value,
+//            onValueChange = {p -> password.value = p},
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+//        )
+//
+//        TextField(
+//            label = { Text(text = "닉네임") },
+//            value = nickname.value,
+//            onValueChange = {nk -> nickname.value = nk}
+//        )
+//
+//        TextField(label = { Text(text = "나이") },
+//            value = age.value,
+//            onValueChange = {a -> age.value = a}
+//        )
+//
+//        Spacer(modifier = Modifier.padding(20.dp))
+//
+//        Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)){
+//            Button(
+//                onClick = {
+//                    Log.d(TAG, "JoinScreen: Join")
+//                    memberViewModel.joinMember(
+//                        name = name.value,
+//                        email = email.value,
+//                        password = password.value,
+//                        nickname = nickname.value,
+//                        age = age.value.toInt()
+//                    )
+//                    navController.navigate("login")
+//                },
+//                shape = RoundedCornerShape(10.dp),
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Text(text = "회원가입 완료")
+//            }
+//        }
+//    }
+//}
+
 @Composable
 fun JoinScreen(
     memberViewModel: MemberViewModel,
     memberJoinResponse: MutableState<MemberJoinDto?>,
     navController: NavController
-){
+) {
     Column(
         modifier = Modifier
-            .padding(20.dp),
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val name = remember{
-            mutableStateOf("")
-        }
-
-        val email = remember {
-            mutableStateOf("")
-        }
-
-        val password = remember {
-            mutableStateOf("")
-        }
-
-        val nickname = remember {
-            mutableStateOf("")
-        }
-
-        val age = remember {
-            mutableStateOf("")
-        }
+        val name = remember { mutableStateOf("") }
+        val email = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
+        val nickname = remember { mutableStateOf("") }
+        val age = remember { mutableStateOf("") }
 
         Text(
             text = "회원가입",
-            style = TextStyle(
-                fontSize = 40.sp,
-                fontFamily = FontFamily.Cursive,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.padding(20.dp)
+            style = MaterialTheme.typography.h4,
+            modifier = Modifier.padding(bottom = 32.dp)
         )
 
-        Spacer(modifier = Modifier.padding(20.dp))
-
-        TextField(
-            label = { Text(text = "이름") },
+        OutlinedTextField(
             value = name.value,
-            onValueChange = {n -> name.value = n}
+            onValueChange = { name.value = it },
+            label = { Text(text = "이름") },
+            modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
-            label = { Text(text = "이메일 (아이디)") },
+        OutlinedTextField(
             value = email.value,
-            onValueChange = {e -> email.value = e}
+            onValueChange = { email.value = it },
+            label = { Text(text = "이메일 (아이디)") },
+            modifier = Modifier.fillMaxWidth()
         )
 
-        TextField(
-            label = { Text(text = "비밀번호") },
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
             value = password.value,
-            onValueChange = {p -> password.value = p},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            onValueChange = { password.value = it },
+            label = { Text(text = "비밀번호") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            modifier = Modifier.fillMaxWidth()
         )
 
-        TextField(
-            label = { Text(text = "닉네임") },
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
             value = nickname.value,
-            onValueChange = {nk -> nickname.value = nk}
+            onValueChange = { nickname.value = it },
+            label = { Text(text = "닉네임") },
+            modifier = Modifier.fillMaxWidth()
         )
 
-        TextField(label = { Text(text = "나이") },
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
             value = age.value,
-            onValueChange = {a -> age.value = a}
+            onValueChange = { age.value = it },
+            label = { Text(text = "나이") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.padding(20.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-        Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)){
-            Button(
-                onClick = {
-                    Log.d(TAG, "JoinScreen: Join")
-                    memberViewModel.joinMember(
-                        name = name.value,
-                        email = email.value,
-                        password = password.value,
-                        nickname = nickname.value,
-                        age = age.value.toInt()
-                    )
-                    navController.navigate("login")
-                },
-                shape = RoundedCornerShape(10.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "회원가입 완료")
-            }
+        Button(
+            onClick = {
+                memberViewModel.joinMember(
+                    name = name.value,
+                    email = email.value,
+                    password = password.value,
+                    nickname = nickname.value,
+                    age = age.value.toIntOrNull() ?: 0
+                )
+                navController.navigate("login")
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(text = "회원가입 완료")
         }
     }
 }

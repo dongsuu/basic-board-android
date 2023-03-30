@@ -84,6 +84,7 @@ fun Navigation(
                 postViewModel = postViewModel,
                 memberViewModel = memberViewModel)
         }
-
+        composable("myInfo"){ MyInfoScreen(memberViewModel = memberViewModel, navController = navController)}
+        composable("updateMyInfo"){ UpdateMyInfo(memberViewModel = memberViewModel, navController = navController)}
     }
 }

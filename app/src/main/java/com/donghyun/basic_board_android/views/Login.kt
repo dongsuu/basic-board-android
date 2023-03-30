@@ -25,7 +25,6 @@ import com.donghyun.basic_board_android.viewModel.MemberViewModel
 fun LoginScreen(
     navController: NavController,
     memberViewModel: MemberViewModel,
-    homeviewModel: HomeViewModel
 ){
     Column(
         modifier = Modifier
