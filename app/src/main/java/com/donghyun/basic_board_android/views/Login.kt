@@ -17,6 +17,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.donghyun.basic_board_android.BoardEmailTextField
+import com.donghyun.basic_board_android.BoardEmailValidationTextField
+import com.donghyun.basic_board_android.BoardPasswordTextField
+import com.donghyun.basic_board_android.utility.BoardMainButton
+import com.donghyun.basic_board_android.utility.BoardTitleText
 import com.donghyun.basic_board_android.utility.isValidEmail
 import com.donghyun.basic_board_android.viewModel.HomeViewModel
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
@@ -34,85 +39,24 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val email = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
 
-        val email = remember {
-            mutableStateOf("")
-        }
-
-        val password = remember {
-            mutableStateOf("")
-        }
-
-        val isValidEmail = remember {
-            mutableStateOf(false)
-        }
-        val isValidPassword = remember {
-            mutableStateOf(false)
-        }
-
-        Text(
-            text = "로그인",
-            style = TextStyle(
-                fontSize = 40.sp,
-                fontFamily = FontFamily.Cursive,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.padding(20.dp)
-        )
-
+        BoardTitleText(text = "로그인")
         Spacer(modifier = Modifier.padding(20.dp))
 
-        OutlinedTextField(
-            value = email.value,
-            onValueChange = {
-                email.value = it
-                isValidEmail.value = it.isValidEmail()
-            },
-            label = { Text(text = "이메일 (아이디)") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isValidEmail.value,
-        )
-        if(!isValidEmail.value){
-            Text(
-                text = "이메일 형식이 잘못되었습니다. (email@xxx.xx)",
-                style = TextStyle(color = MaterialTheme.colors.error)
-            )
-        }
-
+        BoardEmailTextField(email = email)
         Spacer(modifier = Modifier.padding(20.dp))
 
-        OutlinedTextField(
-            value = password.value,
-            onValueChange = { password.value = it },
-            label = { Text(text = "비밀번호") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isValidPassword.value,
-        )
-
+        BoardPasswordTextField(password = password)
         Spacer(modifier = Modifier.padding(20.dp))
 
-
-        Button(
-            onClick = {
-                memberViewModel.login(email = email.value, password = password.value, navController)
-            },
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "로그인")
-        }
-
-
-        Button(
-            onClick = {
-                navController.navigate("join")
-            },
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "회원가입")
-        }
+        BoardMainButton(onClick = {
+            memberViewModel.login(email = email.value, password = password.value, navController)
+        }, buttonText = "로그인")
+        BoardMainButton(onClick = {
+            navController.navigate("join")
+        }, buttonText = "회원가입")
 
 
     }
