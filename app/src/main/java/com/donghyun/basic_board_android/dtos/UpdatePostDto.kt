@@ -6,7 +6,7 @@ data class UpdatePostDto(
     val title: String,
     val content: String,
     val boardName: String,
-    val uploadFilePaths: List<String>,
+    val uploadFilePaths: MutableList<String>,
     val author: String,
     val lastModifiedDate: String
 )

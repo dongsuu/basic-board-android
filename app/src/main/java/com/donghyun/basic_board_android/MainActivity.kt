@@ -54,7 +54,7 @@ fun Navigation(
 ){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "login"){
-        composable("login"){ LoginScreen(navController = navController, memberViewModel, homeviewModel = homeViewModel) }
+        composable("login"){ LoginScreen(navController = navController, memberViewModel) }
         composable("join"){ JoinScreen(memberViewModel = memberViewModel, memberJoinResponse = memberJoinResponse, navController = navController) }
         composable("home"){ Home(navController = navController, currentMemberInfo = homeViewModel.getCurrentMemberInfo(), memberViewModel = memberViewModel) }
         composable("boardList") { BoardListScreen(navController = navController) }
@@ -80,9 +80,10 @@ fun Navigation(
         composable("updatePost"){
             UpdatePost(
                 navController = navController,
-                imageUri = postViewModel.getImageUri(),
                 postViewModel = postViewModel,
-                memberViewModel = memberViewModel)
+                memberViewModel = memberViewModel,
+                imageUri = postViewModel.getImageUri()
+                )
         }
         composable("myInfo"){ MyInfoScreen(memberViewModel = memberViewModel, navController = navController)}
         composable("updateMyInfo"){ UpdateMyInfo(memberViewModel = memberViewModel, navController = navController)}

@@ -9,15 +9,22 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
 import com.donghyun.basic_board_android.viewModel.PostViewModel
@@ -54,22 +61,27 @@ fun PostForm(
     }
 
     Column(
-        modifier = Modifier.padding(60.dp),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(60.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(
-            label = { Text(text = "제목") },
+        OutlinedTextField(
             value = title.value,
-            onValueChange = {t -> title.value = t}
+            onValueChange = { title.value = it },
+            label = { Text(text = "제목") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
-        TextField(
-            label = { Text(text = "내용") },
+        OutlinedTextField(
             value = content.value,
-            onValueChange = {c -> content.value = c}
+            onValueChange = { content.value = it },
+            label = { Text(text = "내용") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            modifier = Modifier.fillMaxWidth()
         )
 
 
@@ -84,39 +96,55 @@ fun PostForm(
             }
         }
 
+        Spacer(modifier = Modifier.padding(20.dp))
+
         Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
-            if(bitmap != null){
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "image"
-                )
+            Text(text = "이미지", style = TextStyle(fontSize = 16.sp))
+
+            Row(horizontalArrangement = Arrangement.SpaceEvenly){
+                Button(
+                    onClick = {
+                        launcher.launch("image/*")
+                    },
+                    modifier = Modifier.padding(3.dp),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "이미지 선택")
+                }
+                Button(onClick = {
+                    imageUri.value = null
+                    postViewModel.getImageUri().value = null
+                },
+                    modifier = Modifier.padding(3.dp),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "이미지 선택 취소")
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .fillMaxWidth()
+                    .height(240.dp)
+            ) {
+                if(bitmap != null){
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "image",
+                        contentScale = ContentScale.Fit
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.padding(20.dp))
-        Row(horizontalArrangement = Arrangement.SpaceBetween){
-            Button(
-                onClick = {
-                    launcher.launch("image/*")
-                },
-                modifier = Modifier.padding(3.dp)
-            ) {
-                Text(text = "이미지 선택")
-            }
-            Button(onClick = {
-                    imageUri.value = null
-                    postViewModel.getImageUri().value = null
-                },
-                modifier = Modifier.padding(3.dp)
-            ) {
-                Text(text = "이미지 선택 취소")
-            }
-        }
 
-        Row(horizontalArrangement = Arrangement.SpaceBetween){
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ){
             Button(onClick = {
                 postViewModel.createPost(
                     title.value,
@@ -126,7 +154,9 @@ fun PostForm(
                     context,
                     navController,
                     memberViewModel.getRequestToken().value)
-                 }, modifier = Modifier.padding(3.dp)
+                 },
+                modifier = Modifier.padding(3.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text(text = "글쓰기 완료")
             }
@@ -136,7 +166,9 @@ fun PostForm(
                     navController.navigate("postHome/${boardName}")
                     imageUri.value = null
                     postViewModel.getImageUri().value = null
-                }, modifier = Modifier.padding(3.dp)
+                },
+                modifier = Modifier.padding(3.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text(text = "글쓰기 취소")
             }

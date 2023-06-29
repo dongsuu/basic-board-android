@@ -7,7 +7,7 @@ data class DetailsPostDto(
     val author: String,
     val authorNickname: String,
     val boardName: String,
-    val uploadFilePaths: List<String>,
+    val uploadFilePaths: MutableList<String>,
     val lastModifiedDate: String,
     val parentComments: List<ParentCommentDto>
 )

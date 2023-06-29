@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,10 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.donghyun.basic_board_android.utility.FormDataUtil
 import com.donghyun.basic_board_android.viewModel.CommentViewModel
 import com.donghyun.basic_board_android.viewModel.HomeViewModel
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
 import com.donghyun.basic_board_android.viewModel.PostViewModel
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun PostDetails(
@@ -120,12 +123,16 @@ fun PostDetails(
         }
 
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             if (homeViewModel.getCurrentMemberInfo().value!!.name == post.author) {
                 Button(onClick = {
                     navController.navigate("updatePost")
-                }) {
+                },
+                    modifier = Modifier.padding(3.dp),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
                     Text(text = "글 수정하기")
                 }
                 Button(onClick = {
@@ -134,8 +141,10 @@ fun PostDetails(
                         postViewModel.getCurrentPostId().value,
                         post.boardName,
                         navController
-                    )
-                }) {
+                    )},
+                    modifier = Modifier.padding(3.dp),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
                     Text(text = "글 삭제")
                 }
             }
@@ -316,7 +325,9 @@ fun PostDetails(
                         content.value,
                         navController
                     )
-                }
+                },
+                modifier = Modifier.padding(3.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text("등록")
             }
@@ -337,15 +348,17 @@ fun PostDetails(
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = parentComment.createDate,
-                        color = Color.Gray,
-                        fontSize = 12.sp
-                    )
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Text(
+                            text = parentComment.createDate,
+                            color = Color.Gray,
+                            fontSize = 12.sp
+                        )
+                    }
                     if(parentComment.authorNickname == homeViewModel.getCurrentMemberInfo().value!!.nickname){
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
-                            modifier = Modifier.size(60.dp),
+                            modifier = Modifier.width(50.dp).height(30.dp),
                             onClick = {
                                 commentViewModel.deleteComment(
                                     parentComment.commentId,
@@ -356,12 +369,11 @@ fun PostDetails(
                         ) {
                             Text(
                                 text = "삭제",
-                                fontSize = 12.sp
+                                fontSize = 10.sp
                             )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = parentComment.content,
                     fontSize = 14.sp

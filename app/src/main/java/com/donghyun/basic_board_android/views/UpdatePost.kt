@@ -4,6 +4,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -13,12 +14,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.donghyun.basic_board_android.utility.UriUtil
 import com.donghyun.basic_board_android.viewModel.HomeViewModel
 import com.donghyun.basic_board_android.viewModel.MemberViewModel
 import com.donghyun.basic_board_android.viewModel.PostViewModel
+import java.io.File
 
 @Composable
 fun UpdatePost(
@@ -30,9 +36,13 @@ fun UpdatePost(
     TopAppBar(navController = navController)
 
     val previousPost = postViewModel.getPostDetails().value!!
+    val previousImages = remember {
+        mutableStateListOf(previousPost.uploadFilePaths)
+    }
     val imageUris = remember {
         mutableStateListOf<Uri?>()
     }
+
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -105,6 +115,15 @@ fun UpdatePost(
                 Text("스포츠 게시판")
             }
         }
+        
+        if(previousPost.uploadFilePaths.isNotEmpty() && imageUri.value == null){
+            for (im in previousPost.uploadFilePaths) {
+                AsyncImage(
+                    model = im,
+                    contentDescription = "previous image",
+                    contentScale = ContentScale.Fit)
+            }
+        }
 
         val bitmap = imageUri.value?.let{
             if(Build.VERSION.SDK_INT < 28){
@@ -142,6 +161,8 @@ fun UpdatePost(
             Button(onClick = {
                 imageUri.value = null
                 postViewModel.getImageUri().value = null
+                previousPost.uploadFilePaths.clear()
+                previousImages.clear()
             },
                 modifier = Modifier.padding(3.dp)
             ) {

@@ -88,18 +88,15 @@ fun MyInfoScreen(
     memberViewModel: MemberViewModel,
     navController: NavController
 ) {
-// Retrieve the user's information from the view model
     val myInfo = memberViewModel.getMyInfo()
-    // Card layout for the screen
+    TopAppBar(navController = navController)
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(vertical = 60.dp, horizontal = 16.dp),
     ) {
         // Column layout for the screen content
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
+        Column{
             // Title of the screen
             Text(
                 text = "내 정보",
@@ -151,7 +148,7 @@ fun MyInfoScreen(
             }
 
             // Divider for visual separation
-            Divider(color = Color.White)
+            Divider(color = Color.LightGray)
 
             // Display the user's posts
             Text(
@@ -191,7 +188,7 @@ fun MyInfoScreen(
             }
 
             // Divider for visual separation
-            Divider(color = Color.Black)
+            Divider(color = Color.LightGray)
 
             // Display the user's comments
             Text(
