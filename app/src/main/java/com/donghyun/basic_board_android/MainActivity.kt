@@ -56,8 +56,8 @@ fun Navigation(
     NavHost(navController = navController, startDestination = "login"){
         composable("login"){ LoginScreen(navController = navController, memberViewModel) }
         composable("join"){ JoinScreen(memberViewModel = memberViewModel, memberJoinResponse = memberJoinResponse, navController = navController) }
-        composable("home"){ Home(navController = navController, currentMemberInfo = homeViewModel.getCurrentMemberInfo(), memberViewModel = memberViewModel) }
-        composable("boardList") { BoardListScreen(navController = navController) }
+        composable("home"){ Home(navController = navController, currentMemberInfo = homeViewModel.getCurrentMemberInfo(), memberViewModel = memberViewModel, homeViewModel = homeViewModel) }
+        composable("boardList") { BoardListScreen(navController = navController, memberViewModel = memberViewModel, homeViewModel = homeViewModel) }
         composable(
             "postHome/{boardName}",
             arguments = listOf(navArgument("boardName"){type = NavType.StringType})
@@ -85,7 +85,7 @@ fun Navigation(
                 imageUri = postViewModel.getImageUri()
                 )
         }
-        composable("myInfo"){ MyInfoScreen(memberViewModel = memberViewModel, navController = navController)}
+        composable("myInfo"){ MyInfoScreen(memberViewModel = memberViewModel, navController = navController, homeViewModel = homeViewModel)}
         composable("updateMyInfo"){ UpdateMyInfo(memberViewModel = memberViewModel, navController = navController)}
     }
 }

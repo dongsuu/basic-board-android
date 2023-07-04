@@ -13,10 +13,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.donghyun.basic_board_android.viewModel.HomeViewModel
+import com.donghyun.basic_board_android.viewModel.MemberViewModel
 
 @Composable
 fun BoardListScreen(
-    navController: NavController
+    navController: NavController,
+    memberViewModel: MemberViewModel,
+    homeViewModel: HomeViewModel
 ){
     TopAppBar(navController = navController)
     Column(
@@ -56,5 +60,10 @@ fun BoardListScreen(
                 navController.navigate("postHome/SPORTS")
             }
         )
+
+        BottomAppBar(
+            navController = navController,
+            memberViewModel = memberViewModel,
+            homeViewModel = homeViewModel)
     }
 }

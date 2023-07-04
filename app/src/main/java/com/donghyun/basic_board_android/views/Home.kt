@@ -23,7 +23,8 @@ import com.donghyun.basic_board_android.viewModel.MemberViewModel
 fun Home(
     navController: NavController,
     currentMemberInfo: MutableState<HomeDto?>,
-    memberViewModel: MemberViewModel
+    memberViewModel: MemberViewModel,
+    homeViewModel: HomeViewModel
 ){
 
     Column(
@@ -71,6 +72,7 @@ fun Home(
 
             Spacer(modifier = Modifier.padding(40.dp))
 
+
             Row(
                 modifier = Modifier.padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -102,5 +104,6 @@ fun Home(
                 }
             }
         }
+        BottomAppBar(navController = navController, memberViewModel = memberViewModel, homeViewModel = homeViewModel)
     }
 }

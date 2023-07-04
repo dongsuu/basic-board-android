@@ -75,6 +75,7 @@ class MemberViewModel(
                 tokenInfo.value = response.body()
                 Log.d(TAG, "login: ${tokenInfo.value}")
                 requestToken.value = tokenInfo.value!!.grantType + " " + tokenInfo.value!!.accessToken
+                navController.navigate("home")
                 homeViewModel.getHome(requestToken.value, navController)
 
             } else {
@@ -107,7 +108,10 @@ class MemberViewModel(
             val response = memberRepository.myInfo(accessToken)
 
             if(response.isSuccessful){
-                navController.navigate("myInfo")
+                navController.navigate("myInfo"){
+                    launchSingleTop = true
+                    restoreState = true
+                }
                 myInfo.value = response.body()
             } else {
                 Log.d(TAG, "myInfo: failed myInfo")
